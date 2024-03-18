@@ -5,6 +5,8 @@ import {OrbitControls} from "three/examples/jsm/controls/OrbitControls.js";
 import {Board} from "./src/board.js";
 import {Vector} from "./src/vector.js";
 import {Food} from "./src/food.js";
+import {directionMap} from "./src/directions_map.js";
+import {Snake} from "./src/snake.js";
 
 
 const scene = new THREE.Scene();
@@ -53,6 +55,9 @@ scene.add(board.tiles);
 let food = new Food(new Vector(0, 0));
 board.tiles.add(food.mesh)
 
+const snake = new Snake(3, new Vector(5, 5), directionMap.right);
+board.tiles.add(snake.segments)
+
 function placeRandomFood() {
     const freeSpots = {};
     for (let x = 0; x < Board.tileAmount; x += Board.tileSize) {
@@ -75,7 +80,7 @@ function placeRandomFood() {
 }
 
 
-window.addEventListener("resize", (e) => {
+window.addEventListener('resize', (e) => {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);

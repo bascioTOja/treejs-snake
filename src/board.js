@@ -1,8 +1,8 @@
 import * as THREE from "three";
 
 export class Board {
-    static tileSize = 1;
-    static tileAmount = 10;
+    static tileSize = 0.8;
+    static tileAmount = 16;
 
     constructor() {
         this.materiales = [
@@ -14,9 +14,9 @@ export class Board {
             })
         ];
         this.tiles = new THREE.Object3D();
-        const boardPosition = - Board.tileSize*Board.tileAmount / 2 + (Board.tileSize / 2)
-        this.tiles.position.setZ(boardPosition)
+        const boardPosition = - Board.tileSize * Board.tileAmount / 2 + (Board.tileSize / 2)
         this.tiles.position.setX(boardPosition)
+        this.tiles.position.setZ(boardPosition)
         this.generateTiles()
     }
 

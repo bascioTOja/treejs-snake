@@ -8,6 +8,9 @@ export class Snake {
         this.direction = startDirection;
         this.moves = [];
         this.segments = new THREE.Object3D();
+        this.segments.position.setX(0.6)
+        this.segments.position.setY(-0.1)
+        this.segments.position.setZ(0.6)
         this.body = Array.from({length}, (_, i) => (
             new SnakeBody(
                 new Vector(
@@ -67,6 +70,8 @@ export class Snake {
     move() {
         this.updateDirection();
         const newHead = new SnakeBody(new Vector(this.head.mesh.position.x + this.direction.x, this.head.mesh.position.z + this.direction.y));
+        const parentMesh = this.head.mesh.parent;
+        parentMesh.add(newHead.mesh)
         this.appendHead(newHead);
         this.removeLastBody();
     }

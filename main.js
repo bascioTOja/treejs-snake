@@ -9,8 +9,11 @@ import {directionMap} from "./src/directions_map.js";
 import {Snake} from "./src/snake.js";
 
 
-const scene = new THREE.Scene();
+const speed = 0.125
+let move_timer = speed;
 
+const scene = new THREE.Scene();
+let clock = new THREE.Clock();
 const camera = new THREE.PerspectiveCamera(
     40, // fov
     window.innerWidth / window.innerHeight, // aspect ratio
@@ -48,6 +51,7 @@ const orbitControls = new OrbitControls(camera, renderer.domElement);
 
 const light = new THREE.HemisphereLight(0xffffff, 0x4444);
 scene.add(light);
+scene.background = new THREE.Color(0x614f4b);
 
 const board = new Board();
 scene.add(board.tiles);
@@ -57,6 +61,12 @@ board.tiles.add(food.mesh)
 
 const snake = new Snake(3, new Vector(5, 5), directionMap.right);
 board.tiles.add(snake.segments)
+
+window.addEventListener('resize', (e) => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+});
 
 function placeRandomFood() {
     const freeSpots = {};
@@ -79,15 +89,41 @@ function placeRandomFood() {
     }
 }
 
+function handleKeyDown(event) {
+    switch (event.keyCode) {
+        case 37: // ←
+        case 65: // a
+            snake.appendMove(directionMap.left);
+            break;
+        case 38: // ↑
+        case 87: // w
+            snake.appendMove(directionMap.up);
+            break;
+        case 39: // →
+        case 68: // d
+            snake.appendMove(directionMap.right);
+            break;
+        case 40: // ↓
+        case 83: // s
+            snake.appendMove(directionMap.down);
+            break;
+    }
+}
 
-window.addEventListener('resize', (e) => {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-});
+function update(dt) {
+    if (move_timer > 0) {
+        move_timer -= dt
+        return
+
+    }
+    move_timer = speed
+
+    snake.move()
+}
 
 function render () {
-
+    const delta = clock.getDelta();
+    update(delta);
     renderer.render( scene, camera );
 
     requestAnimationFrame(render);
@@ -95,6 +131,7 @@ function render () {
 
 function init() {
     placeRandomFood()
+    document.addEventListener('keydown', handleKeyDown);
     render();
 }
 

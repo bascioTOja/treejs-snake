@@ -1,9 +1,10 @@
 import * as THREE from "three";
 
 export class Board {
-    constructor(tileSize, tileAmount) {
-        this.tileSize = tileSize;
-        this.tileAmount = tileAmount;
+    static tileSize = 1;
+    static tileAmount = 10;
+
+    constructor() {
         this.materiales = [
             new THREE.MeshBasicMaterial({
                 color: 0x2e3336,
@@ -13,21 +14,21 @@ export class Board {
             })
         ];
         this.tiles = new THREE.Object3D();
-        const boardPosition = - this.tileSize*this.tileAmount / 2 + (this.tileSize / 2)
+        const boardPosition = - Board.tileSize*Board.tileAmount / 2 + (Board.tileSize / 2)
         this.tiles.position.setZ(boardPosition)
         this.tiles.position.setX(boardPosition)
         this.generateTiles()
     }
 
     generateTiles() {
-        for (let z = 0; z < this.tileAmount; z++) {
-            for (let x = 0; x < this.tileAmount; x++) {
+        for (let z = 0; z < Board.tileAmount; z++) {
+            for (let x = 0; x < Board.tileAmount; x++) {
                 const tile = new THREE.Mesh(
-                    new THREE.PlaneGeometry(this.tileSize, this.tileSize),
+                    new THREE.PlaneGeometry(Board.tileSize, Board.tileSize),
                     this.materiales[(x + z) % 2]
                 );
-                tile.position.z = z * this.tileSize;
-                tile.position.x = x * this.tileSize;
+                tile.position.z = z * Board.tileSize;
+                tile.position.x = x * Board.tileSize;
                 tile.rotation.x = Math.PI * 1.5
                 this.tiles.add(tile);
             }

@@ -3,6 +3,8 @@ import * as THREE from 'three';
 
 import {OrbitControls} from "three/examples/jsm/controls/OrbitControls.js";
 import {Board} from "./src/board.js";
+import {Vector} from "./src/vector.js";
+import {Food} from "./src/food.js";
 
 
 const scene = new THREE.Scene();
@@ -42,11 +44,36 @@ document.body.appendChild(renderer.domElement);
 
 const orbitControls = new OrbitControls(camera, renderer.domElement);
 
-const light = new THREE.HemisphereLight(0xffffff, 0x4444)
-scene.add(light)
+const light = new THREE.HemisphereLight(0xffffff, 0x4444);
+scene.add(light);
 
-const board = new Board(1, 10)
-scene.add(board.tiles)
+const board = new Board();
+scene.add(board.tiles);
+
+let food = new Food(new Vector(0, 0));
+board.tiles.add(food.mesh)
+
+function placeRandomFood() {
+    const freeSpots = {};
+    for (let x = 0; x < Board.tileAmount; x += Board.tileSize) {
+        for (let y = 0; y < Board.tileAmount; y += Board.tileSize) {
+            freeSpots[`${x},${y}`] = {x, y};
+        }
+    }
+    //
+    // snake.body.forEach(segment => {
+    //     delete freeSpots[`${segment.position.x},${segment.position.y}`];
+    // });
+    //
+    const freeSpotsList = Object.values(freeSpots);
+    if (freeSpotsList.length) {
+        const freeSpot = freeSpotsList[Math.floor(Math.random() * freeSpotsList.length)];
+        food.dispose();
+        food = new Food(new Vector(freeSpot.x, freeSpot.y));
+        board.tiles.add(food.mesh)
+    }
+}
+
 
 window.addEventListener("resize", (e) => {
     camera.aspect = window.innerWidth / window.innerHeight;
@@ -61,4 +88,9 @@ function render () {
     requestAnimationFrame(render);
 }
 
-render();
+function init() {
+    placeRandomFood()
+    render();
+}
+
+init();

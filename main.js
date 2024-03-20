@@ -119,6 +119,9 @@ function update(dt) {
     move_timer = speed
 
     snake.move()
+    if (snake.checkFoodCollision(food)) {
+        placeRandomFood()
+    }
 }
 
 function render () {

@@ -7,8 +7,9 @@ export class SnakeBody {
 
     constructor(position, is_head = true) {
         this.is_head = is_head;
+        this.position = position;
         this.mesh = new THREE.Mesh(new THREE.BoxGeometry(Board.tileSize, Board.tileSize, Board.tileSize), this.is_head ? SnakeBody.headMaterial : SnakeBody.bodyMaterial);
-        this.mesh.position.set(position.x, 0.5, position.y);
+        this.mesh.position.set(this.position.x, 0.5, this.position.y);
     }
 
     changeToBody() {

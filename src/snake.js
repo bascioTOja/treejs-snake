@@ -79,12 +79,18 @@ export class Snake {
     grow(amount = 1) {
         let lastBody = this.body[this.body.length - 1];
         for (let i = 0; i < amount; i++) {
-            this.body.push(new SnakeBody(new Vector(lastBody.mesh.position.x, lastBody.mesh.position.z), false));
+            this.addNewBodyPart(new Vector(lastBody.mesh.position.x, lastBody.mesh.position.z))
         }
     }
 
     removeLastBody() {
         let lastSegment = this.body.pop();
         lastSegment.dispose();
+    }
+
+    addNewBodyPart(position) {
+        let newSegment = new SnakeBody(new Vector(position.x, position.y), false)
+        this.body.push(newSegment)
+        this.segments.add(newSegment.mesh)
     }
 }

@@ -8,13 +8,10 @@ export class Snake {
         this.direction = startDirection;
         this.moves = [];
         this.segments = new THREE.Object3D();
-        this.segments.position.setX(0.6)
-        this.segments.position.setY(-0.1)
-        this.segments.position.setZ(0.6)
         this.body = Array.from({length}, (_, i) => (
             new SnakeBody(
                 new Vector(
-                    startPosition.x - i * Board.tileSize,
+                    startPosition.x - i,
                     startPosition.y
                 ),
                 i === 0
@@ -27,15 +24,15 @@ export class Snake {
     }
 
     checkSelfCollision() {
-        return this.body.slice(1).some(segment => segment.mesh.position.x === this.head.position.x && segment.mesh.position.z === this.head.mesh.position.z);
+        return this.body.slice(1).some(segment => segment.position.x === this.head.position.x && segment.position.z === this.head.position.z);
     }
 
     checkWallCollision(width, height) {
-        return this.head.mesh.position.x > (width - Board.tileSize) || this.head.mesh.position.x < 0 || this.head.mesh.position.z > (height - Board.tileSize) || this.head.mesh.position.z < 0;
+        return this.head.position.x > (width - 1) || this.head.position.x < 0 || this.head.position.z > (height - 1) || this.head.position.z < 0;
     }
 
     checkFoodCollision(food) {
-        return food.mesh.position.x === this.head.mesh.position.x && food.mesh.position.z === this.head.mesh.position.z;
+        return food.position.x === this.head.position.x && food.position.y === this.head.position.y;
     }
 
     appendMove(newDirection) {
@@ -69,7 +66,7 @@ export class Snake {
 
     move() {
         this.updateDirection();
-        const newHead = new SnakeBody(new Vector(this.head.mesh.position.x + this.direction.x, this.head.mesh.position.z + this.direction.y));
+        const newHead = new SnakeBody(new Vector(this.head.position.x + this.direction.x, this.head.position.y + this.direction.y));
         const parentMesh = this.head.mesh.parent;
         parentMesh.add(newHead.mesh)
         this.appendHead(newHead);

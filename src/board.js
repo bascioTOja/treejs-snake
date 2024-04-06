@@ -14,9 +14,6 @@ export class Board {
             })
         ];
         this.tiles = new THREE.Object3D();
-        const boardPosition = - Board.tileSize * Board.tileAmount / 2 + (Board.tileSize / 2)
-        this.tiles.position.setX(boardPosition)
-        this.tiles.position.setZ(boardPosition)
         this.generateTiles()
     }
 

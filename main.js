@@ -21,7 +21,7 @@ const camera = new THREE.PerspectiveCamera(
     1000
 );
 
-camera.position.set(-3, 7, 12);
+camera.position.set(-3, 15, 26);
 // const camera = new THREE.OrthographicCamera(
 //     900, 900, 300, -300,
 //     0.1,
@@ -39,7 +39,6 @@ camera.position.set(-3, 7, 12);
 //     0.1,
 //     1000
 // );
-
 
 scene.add(camera);
 
@@ -70,8 +69,8 @@ window.addEventListener('resize', (e) => {
 
 function placeRandomFood() {
     const freeSpots = {};
-    for (let x = 0; x < Board.tileAmount; x += Board.tileSize) {
-        for (let y = 0; y < Board.tileAmount; y += Board.tileSize) {
+    for (let x = 0; x < Board.tileAmount; x += 1) {
+        for (let y = 0; y < Board.tileAmount; y += 1) {
             freeSpots[`${x},${y}`] = {x, y};
         }
     }

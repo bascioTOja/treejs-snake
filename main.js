@@ -74,11 +74,11 @@ function placeRandomFood() {
             freeSpots[`${x},${y}`] = {x, y};
         }
     }
-    //
-    // snake.body.forEach(segment => {
-    //     delete freeSpots[`${segment.position.x},${segment.position.y}`];
-    // });
-    //
+
+    snake.body.forEach(segment => {
+        delete freeSpots[`${segment.position.x},${segment.position.y}`];
+    });
+
     const freeSpotsList = Object.values(freeSpots);
     if (freeSpotsList.length) {
         const freeSpot = freeSpotsList[Math.floor(Math.random() * freeSpotsList.length)];
@@ -119,6 +119,7 @@ function update(dt) {
 
     snake.move()
     if (snake.checkFoodCollision(food)) {
+        snake.grow()
         placeRandomFood()
     }
 }

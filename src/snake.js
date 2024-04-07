@@ -76,7 +76,7 @@ export class Snake {
     grow(amount = 1) {
         let lastBody = this.body[this.body.length - 1];
         for (let i = 0; i < amount; i++) {
-            this.addNewBodyPart(new Vector(lastBody.mesh.position.x, lastBody.mesh.position.z))
+            this.addNewBodyPart(new Vector(lastBody.position.x, lastBody.position.z))
         }
     }
 

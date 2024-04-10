@@ -21,7 +21,7 @@ const camera = new THREE.PerspectiveCamera(
     1000
 );
 
-camera.position.set(-3, 15, 26);
+camera.position.set(1, 13, 21);
 // const camera = new THREE.OrthographicCamera(
 //     900, 900, 300, -300,
 //     0.1,
@@ -54,6 +54,7 @@ scene.background = new THREE.Color(0x614f4b);
 
 const board = new Board();
 scene.add(board.tiles);
+camera.lookAt(new THREE.Vector3(Board.tileAmount*Board.tileSize/2, 0, Board.tileAmount*Board.tileSize/2));
 
 let food = new Food(new Vector(0, 0));
 board.tiles.add(food.mesh)
@@ -127,7 +128,7 @@ function update(dt) {
 function render () {
     const delta = clock.getDelta();
     update(delta);
-    renderer.render( scene, camera );
+    renderer.render(scene, camera);
 
     requestAnimationFrame(render);
 }

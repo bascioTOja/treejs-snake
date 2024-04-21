@@ -22,24 +22,6 @@ const camera = new THREE.PerspectiveCamera(
 );
 
 camera.position.set(1, 13, 21);
-// const camera = new THREE.OrthographicCamera(
-//     900, 900, 300, -300,
-//     0.1,
-//     1000
-// );
-// camera.zoom = 52
-// camera.position.set(1.168099968899527, 4.557983352866799, 7.5889685839309475);
-// camera.rotation.set(-0.72732, -0.665367, -0.5024688434);
-// camera.quaternion.set(-0.24976524, -0.379218798, -0.10708363716, 0.8845018493073)
-// camera.up.y = 1
-// scene.add(camera);
-
-// const camera = new THREE.OrthographicCamera(
-//     window.innerWidth / - 2, window.innerWidth / 2, window.innerHeight / 2, window.innerHeight / - 2,
-//     0.1,
-//     1000
-// );
-
 scene.add(camera);
 
 const renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -59,7 +41,7 @@ camera.lookAt(new THREE.Vector3(Board.tileAmount*Board.tileSize/2, 0, Board.tile
 let food = new Food(new Vector(0, 0));
 board.tiles.add(food.mesh)
 
-const snake = new Snake(3, new Vector(5, 5), directionMap.right);
+let snake = getNewSnake();
 board.tiles.add(snake.segments)
 
 window.addEventListener('resize', (e) => {
@@ -87,6 +69,18 @@ function placeRandomFood() {
         food = new Food(new Vector(freeSpot.x, freeSpot.y));
         board.tiles.add(food.mesh)
     }
+}
+
+function getNewSnake() {
+    return new Snake(3, new Vector(Math.round(Board.tileAmount * 0.25), Math.round(Board.tileAmount / 2)), directionMap.right);
+}
+
+function restartGame() {
+    snake.dispose()
+    snake = getNewSnake()
+    board.tiles.add(snake.segments)
+
+    placeRandomFood()
 }
 
 function handleKeyDown(event) {
@@ -119,6 +113,11 @@ function update(dt) {
     move_timer = speed
 
     snake.move()
+
+    if (snake.checkSelfCollision() || snake.checkWallCollision(Board.tileAmount, Board.tileAmount)) {
+        restartGame()
+    }
+
     if (snake.checkFoodCollision(food)) {
         snake.grow()
         placeRandomFood()

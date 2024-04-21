@@ -24,11 +24,11 @@ export class Snake {
     }
 
     checkSelfCollision() {
-        return this.body.slice(1).some(segment => segment.position.x === this.head.position.x && segment.position.z === this.head.position.z);
+        return this.body.slice(1).some(segment => segment.position.x === this.head.position.x && segment.position.y === this.head.position.y);
     }
 
     checkWallCollision(width, height) {
-        return this.head.position.x > (width - 1) || this.head.position.x < 0 || this.head.position.z > (height - 1) || this.head.position.z < 0;
+        return this.head.position.x > (width - 1) || this.head.position.x < 0 || this.head.position.y > (height - 1) || this.head.position.y < 0;
     }
 
     checkFoodCollision(food) {
@@ -89,5 +89,12 @@ export class Snake {
         let newSegment = new SnakeBody(new Vector(position.x, position.y), false)
         this.body.push(newSegment)
         this.segments.add(newSegment.mesh)
+    }
+
+    dispose() {
+        for (let segment of this.body) {
+            segment.dispose()
+        }
+        this.segments.removeFromParent()
     }
 }

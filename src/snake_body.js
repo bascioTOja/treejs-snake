@@ -18,7 +18,7 @@ export class SnakeBody {
     }
 
     dispose() {
-        this.mesh.removeFromParent()
         this.mesh.geometry.dispose();
+        this.mesh.removeFromParent()
     }
 }

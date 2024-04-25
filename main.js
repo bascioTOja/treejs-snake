@@ -21,7 +21,7 @@ const camera = new THREE.PerspectiveCamera(
     1000
 );
 
-camera.position.set(1, 13, 21);
+camera.position.set(1, 17, 23);
 scene.add(camera);
 
 const renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -126,6 +126,7 @@ function update(dt) {
 
 function render () {
     const delta = clock.getDelta();
+    camera.lookAt(new THREE.Vector3(Board.tileAmount*Board.tileSize/2, 0, Board.tileAmount*Board.tileSize/2)); // TODO: To remove after remove orbitControls
     update(delta);
     renderer.render(scene, camera);
 
